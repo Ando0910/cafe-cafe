@@ -1,2 +1,3 @@
 ﻿<?php
-echo 'Hello World!こんにちは3回目のコミット';
+$name = "Hellow world";
+echo "{$name}";
