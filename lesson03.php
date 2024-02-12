@@ -1,5 +1,5 @@
 ﻿<?php
-$num = "0";
+$num = "50";
 if ($num > 50) {
     echo "50より大きい". "\n";
 } elseif ($num < 50) {
