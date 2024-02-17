@@ -14,5 +14,9 @@ for ($i = 0; $i < $n - 1; $i++) {
     }
 }
 foreach ($arr as $value) {
-    echo $value . ',';
+    if ($value === end($arr)) {
+        echo $value . "\n";
+    } else {
+        echo $value . ',';
+    }
 }
