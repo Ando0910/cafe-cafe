@@ -1,45 +1,52 @@
-<?php
-$yen = 10000;   // 購入金額
-$product = 150; // 商品金額
-
-
-
-function calc($yen, $product)
+﻿<?php
+function numberLoop()
 {
-    // この関数内に処理を記述
-    $change = $yen - $product;
-    return $change;
-}
-
-function calcCoins($amount)
-{
-    $bills = [10000, 5000, 1000, 500, 100, 50, 10, 5, 1];
-    $result = [];
-
-    foreach ($bills as $bill) {
-        $count = floor($amount / $bill);
-        $amount %= $bill;
-        $result[$bill] = $count;
-    }
+    // この関数に判定処理を記述
+    $result = "";
+    for ($i = 1; $i <= 5; $i++) {
+        for ($j = 1; $j <= 5 - $i; $j++) {
+            $result .= "*";
+        }
+        for ($j = 1; $j <= $i; $j++) {
+            $result .= $j;
+        }
+        for ($j = $i - 1; $j >= 1; $j--) {
+            $result .= $j;
+        }
+        $result .= "<br/>";
+    };
+    for ($i = 1; $i <= 4; $i++) {
+        for ($j = 1; $j <= $i; $j++) {
+            $result .= "*";
+        }
+        for ($j = 1; $j <= 5 - $i; $j++) {
+            $result .= $j;
+        }
+        for ($j = $j - 2; $j >= 1; $j--) {
+            $result .= $j;
+        }
+        $result .= "<br/>";
+    };
     return $result;
 }
+?>
+<!DOCTYPE html>
+<html lang="ja">
 
-$changeAmount = calc($yen, $product);
-if ($changeAmount >= 0) {
-    $changeCoins = calcCoins($changeAmount);
+<head>
+    <meta charset="utf-8">
+    <title>ループ表示</title>
+</head>
 
-    echo "{$yen}円で購入した場合、\n";
-    echo "10000円札x{$changeCoins[10000]}枚、";
-    echo "5000円札x{$changeCoins[5000]}枚、";
-    echo "1000円札x{$changeCoins[1000]}枚、";
-    echo "500円玉x{$changeCoins[500]}枚、";
-    echo "100円玉x{$changeCoins[100]}枚、";
-    echo "50円玉x{$changeCoins[50]}枚、";
-    echo "10円玉x{$changeCoins[10]}枚、";
-    echo "5円玉x{$changeCoins[5]}枚、";
-    echo "1円玉x{$changeCoins[1]}枚\n";
-} else {
-    $remainingAmount = abs($changeAmount);
-    echo "{$yen}円で購入した場合、" . "\n";
-    echo "{$remainingAmount}円足りません。" . "\n";
-}
+<body>
+
+    <!-- ここに表示例の通り表示 -->
+    <?php
+    echo numberLoop();
+    ?>
+</body>
+
+</html>
+
+
+<?php
