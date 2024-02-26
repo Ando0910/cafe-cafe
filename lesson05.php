@@ -111,7 +111,7 @@ function judge($cards)
 
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" style="text/css" href="./css/style.css">
+    <link rel="stylesheet" href="css/style.css">
     <title>ポーカー役判定</title>
 </head>
 
@@ -165,7 +165,7 @@ function judge($cards)
                 <!-- 引数の仕様有無は各自の判断に任せるとする。-->
                 <p>役は<?php
                         $cards = hand();
-                        echo judge($cards) ?>
+                        echo judge($cards); ?>
                 </p>
             </div>
         </section>
