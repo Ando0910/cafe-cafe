@@ -1,44 +1,34 @@
-<?php
+﻿<?php
 
-$num1 = 1;  // 分子
-$deno1 = 10; // 分母
-$num2 = 5;  // 分子
-$deno2 = 6; // 分母
-
-
-
-function calcFraction($num1, $deno1, $num2, $deno2)
+function isLeapYear($year)
 {
-  // この関数内に処理を記述
-
-  $deno = lcm($deno1, $deno2);
-  $numA = ($deno / $deno1) * $num1;
-  $numB = ($deno / $deno2) * $num2;
-  $numTotal = $numA + $numB;
-
-
-  $gcd = gcd($numTotal, $deno);
-  $numTotal /= $gcd;
-  $deno /= $gcd;
-
-
-  echo "$num1/$deno1 + $num2/$deno2 = $numTotal/$deno\n";
+    // この関数に判定処理を記述
+    $image_path = 'img/torch.png';
+    if ((($year % 4 == 0) && !($year % 100 == 0)) || ($year % 400 == 0)) {
+        return "
+        <img src=" . $image_path . ">
+        :{$year}年は閏年です。<br/>";
+    } else {
+        return "{$year}年<br/>";
+    }
 }
-// 最大公約数
-function gcd($m, $n)
-{
-  if ($n > $m) list($m, $n) = array($n, $m);
 
-  while ($n !== 0) {
-    $tmp_n = $n;
-    $n = $m % $n;
-    $m = $tmp_n;
-  }
-  return $m;
-}
-// 最小公倍数
-function lcm($m, $n)
-{
-  return $m * $n / gcd($m, $n);
-}
-calcFraction($num1, $deno1, $num2, $deno2);
+?>
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <title>うるう年判定</title>
+</head>
+
+<body>
+    <!-- ここに表示例の通り表示 -->
+    <?php
+    for ($year = 1980; $year <= 2080; $year++) {
+        echo isLeapYear($year);
+    }
+    ?>
+</body>
+
+</html>
