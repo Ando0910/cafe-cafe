@@ -1,0 +1,37 @@
+@charset "UTF-8";
+.header {
+    position: relative;
+    top: 0;
+    background-color:rgba(0,0,0,0.8);
+    z-index: 0;
+}
+p {
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+span {
+    color: #ff0000;
+}
+h2 {
+    text-align: center;
+    font-size: 1.6rem;
+    border-bottom: solid 1px #ccc;
+    padding-block: 5px;
+}
+.disc {
+    padding: 20px;
+}
+.disc a {
+border-bottom: solid 1px;
+color: #551a8b;
+font-size: 1.4rem;
+}
+.form-sec__area {
+    border: solid 1px #ccc;
+    border-radius: 8px;
+    width:70%;
+    margin: auto;
+    margin-block: 50px;
+}
+
+
