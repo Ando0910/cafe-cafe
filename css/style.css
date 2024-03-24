@@ -69,6 +69,7 @@ nav {
 .sp-nav {
     display: none;
 }
+
 .pc-sign-in__area {
     z-index: 100;
 }
@@ -79,7 +80,7 @@ nav {
     background-color: rgba(0,0,0,0.5);
     z-index: 60;
     height: 120vh;
-    width: 100%;
+    width: 100vw;
     opacity: 0;
     transition: opacity 0.1s ease-in;
     visibility: hidden;
@@ -92,12 +93,13 @@ nav {
 .pc-sign-in{
     position: absolute;
     text-align: center;
-    top: 160px;
-    left: 30%;
+    top: 110px;
+    left: 28%;
     transform:translateY(80%);
-    border-radius: 6px;
+    border-radius: 8px;
     height: auto;
-    width: 350px;
+    /* width: 350px; */
+    width: 45vw;
     visibility: hidden;
     z-index: 100;
     opacity: 0;
@@ -107,15 +109,18 @@ nav {
 .pc-sign-in.pc_toggle-on {
     opacity: 1;
     transform: translateY(0);
-    visibility: visible ;
+    left: 28%;
+    /* visibility: visible ; */
+    display: block;
 }
 .pc-sign-in__area{
     padding-block: 15px;
     padding-inline: 20px;
 }
 .pc-sign-in__area h4{
-    border-bottom: solid 1px #000;
+    border-bottom: solid 1px #aaaaaa;
     color: #000;
+    padding-bottom: 10px;
 }
 .pc-sign-in__list{
     padding-block: 15px;
@@ -124,7 +129,7 @@ nav {
     row-gap: 10px;
 }
 .pc-sign-in__item{
-    border: solid 1px #000;
+    border: solid 1px #aaaaaa;
     border-radius: 6px;
     height: 30px;
     font-size: 1.4rem;
@@ -144,7 +149,7 @@ nav {
     color: #fff;
 }
 .pc-sign-in__account-list {
-    border-top: solid 1px #000;
+    border-top: solid 1px #aaaaaa;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -154,7 +159,7 @@ nav {
 }
 .pc-sign-in__account-list li {
     width:100%;
-    border: 1px solid #000;
+    border: 1px solid #aaaaaa;
     border-radius: 6px;
     padding-block: 5px;
 }
@@ -165,7 +170,11 @@ nav {
 
 @media (width <= 896px) {
     .pc-sign-in {
-        display: none;
+        width: 60vw;
+        /* display: none; */
+    }
+    .pc-sign-in.pc_toggle-on {
+        left: 20%;
     }
     .nav-list {
         display: none;
@@ -203,6 +212,9 @@ nav {
     .sp-nav__item p{
         font-weight: 400;
         padding-inline: 10px;
+    }
+    .sp-nav__item .pc_toggle-button p{
+        color: #000;
     }
     .sp-nav__item:first-child{
         border-bottom: 1px solid #817e7e;

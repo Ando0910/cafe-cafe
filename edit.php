@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($kana) || mb_strlen($kana) > 10) {
         $errors['kana'] = "フリガナは必須入力です。10文字以内でご入力ください。";
     }
-    if (!preg_match("/^[0-9]+$/", $tell)) {
+    if (!preg_match("/^[0-9]+$/", $tell) && !empty($tell)) {
         $errors['tel'] = "電話番号は0-9の数字のみでご入力ください。";
     }
     if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {

@@ -28,24 +28,40 @@ window.addEventListener('scroll', function() {
 });
 
 
-const toggleBtn = document.querySelector(".sp_toggle-button");
+// トグルボタン
+const spToggleBtn = document.querySelector(".sp_toggle-button");
+const pcToggleBtn = document.querySelectorAll(".pc_toggle-button");
 const navSp = document.querySelector(".sp-nav");
 
-if (navSp) {
-    toggleBtn.addEventListener("click", () => {
+if (navSp && spToggleBtn) {
+    spToggleBtn.addEventListener("click", (e) => {
         navSp.classList.toggle("toggle-on");
+        e.stopPropagation();
     });
 }
 
+document.addEventListener("click", (e) => {
 
-const pcToggleBtn = document.querySelector(".pc_toggle-button");
+    if (!navSp.contains(e.target) && !spToggleBtn.contains(e.target)) {
+        navSp.classList.remove("toggle-on");
+    }
+});
+
+pcToggleBtn.forEach(btn => {
+    btn.addEventListener("click", () => {
+        navSp.classList.remove("toggle-on");
+    });
+});
+
+
+//　サインインメニュー
+const pcToggleBtns = document.querySelectorAll(".pc_toggle-button");
 const navPc = document.querySelector(".pc-sign-in");
 const bg = document.querySelector(".pc-sign-in__bg");
 
 function toggleMenuAndBackground() {
     bg.classList.toggle("pc_toggle-on");
     navPc.classList.toggle("pc_toggle-on");
-
 
     if (!navPc.classList.contains("pc_toggle-on")) {
         navPc.style.opacity = 0;
@@ -56,11 +72,11 @@ function toggleMenuAndBackground() {
     }
 }
 
+pcToggleBtns.forEach(btn => {
+    btn.addEventListener("click", toggleMenuAndBackground);
+});
 
-if (pcToggleBtn && navPc && bg) {
-    pcToggleBtn.addEventListener("click", toggleMenuAndBackground);
-
-
+if (bg) {
     bg.addEventListener("click", () => {
         bg.classList.remove("pc_toggle-on");
         navPc.classList.remove("pc_toggle-on");
@@ -68,6 +84,7 @@ if (pcToggleBtn && navPc && bg) {
         navPc.style.visibility = 'hidden';
     });
 }
+
 
 // バリデーション
 document.addEventListener("DOMContentLoaded", function() {
@@ -88,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function() {
             errorMessage += "フリガナは必須入力です。10文字以内でご入力ください。\n";
         }
         // 電話番号の検証
-        if (!tell.match(/^[0-9]+$/)) {
+        if (tell.length !== 0 && !tell.match(/^[0-9]+$/)) {
             errorMessage += "電話番号は0-9の数字のみでご入力ください。\n";
         }
         // メールアドレスの検証
@@ -102,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // エラーメッセージがあればアラート表示し、送信をキャンセル
         if (errorMessage !== "") {
             alert(errorMessage);
-            event.preventDefault();
+            // event.preventDefault();
         }
     });
 });
@@ -134,5 +151,3 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-
-

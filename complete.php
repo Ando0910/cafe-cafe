@@ -20,11 +20,7 @@ $kana = isset($_SESSION['form_data']['kana']) ? $_SESSION['form_data']['kana'] :
 $tell = isset($_SESSION['form_data']['tel']) ? $_SESSION['form_data']['tel'] : null;
 $email = isset($_SESSION['form_data']['email']) ? $_SESSION['form_data']['email'] : null;
 $message = isset($_SESSION['form_data']['body']) ? $_SESSION['form_data']['body'] : null;
-// $name = isset($_POST['name']) ? ($_POST['name']) : null;
-// $kana = isset($_POST['kana']) ? ($_POST['kana']) : null;
-// $tell = isset($_POST['tel']) ? ($_POST['tel']) : null;
-// $email = isset($_POST['email']) ? ($_POST['email']) : null;
-// $message = isset($_POST['body']) ? ($_POST['body']) : null;
+
 
 // SQL文を準備
 $sql = "INSERT INTO contacts (name, kana, tel, email, body) VALUES (:name, :kana, :tel, :email, :body)";
@@ -42,7 +38,6 @@ $stmt->bindParam(':body', $message, PDO::PARAM_STR);
 // SQL文を実行
 $stmt->execute();
 
-//
 //
 // フォームデータをセッションから削除
 if (isset($_SESSION['form_data'])) {

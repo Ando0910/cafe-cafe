@@ -5,10 +5,10 @@
             <nav>
                 <div class="nav-area">
                     <ul class="nav-list">
-                        <a href="#first">
+                        <a href="index.php#first">
                             <li class="nav-item">はじめに</li>
                         </a>
-                        <a href="#forth">
+                        <a href="index.php#forth">
                             <li class="nav-item">体験</li>
                         </a>
                         <a href="contact.php">
@@ -33,17 +33,17 @@
             <div class="sp-nav__area">
                 <ul class="sp-nav__list">
                     <li class="sp-nav__item">
-                        <a href="">
+                        <div class="pc_toggle-button">
                             <p>サインイン</p>
-                        </a>
+                        </div>
                     </li>
                     <li class="sp-nav__item">
-                        <a href="#first">
+                        <a href="index.php#first">
                             <p>はじめに</p>
                         </a>
                     </li>
                     <li class=" sp-nav__item">
-                        <a href="#forth">
+                        <a href="index.php#forth">
                             <p>体験</p>
                         </a>
                     </li>

@@ -25,8 +25,6 @@ if (!empty($_SESSION['form_data'])) {
 // セッションのエラーメッセージとフォームデータをクリア
 unset($_SESSION['errors'], $_SESSION['form_data']);
 
-
-
 ?>
 
 <!DOCTYPE html>
@@ -111,7 +109,7 @@ unset($_SESSION['errors'], $_SESSION['form_data']);
             $sql = "UPDATE contacts SET name = ?, kana = ?, tel = ?, email = ?, body = ? WHERE id = ?";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$_POST['name'], $_POST['kana'], $_POST['tel'], $_POST['email'], $_POST['body'], $_POST['id']]);
-            echo "データを更新しました。<br>";
+            // echo "データを更新しました。<br>";
         }
 
         // データの表示
