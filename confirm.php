@@ -31,7 +31,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tell = trim($_POST["tel"] ?? '');
     $email = trim($_POST["email"] ?? '');
     $message = trim($_POST["body"] ?? '');
-
     // バリデーションチェック
     if (empty($name) || mb_strlen($name) > 10) {
         $errors['name'] = "氏名は必須入力です。10文字以内でご入力ください。";
@@ -57,16 +56,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 }
+
+if (isset($_POST['id'])) {
+    $id = $_POST['id'];
+} else {
+    $id = '';
+}
 $_SESSION['form_submitted'] = true;
 $_SESSION['form_data'] = [
+    'id' => $id,
     'name' => $_POST['name'],
     'kana' => $_POST['kana'],
     'tel' => $_POST['tel'],
     'email' => $_POST['email'],
     'body' => $_POST['body'],
 ];
-
-
 ?>
 <!DOCTYPE html>
 
@@ -115,7 +119,7 @@ $_SESSION['form_data'] = [
         </form>
         <div class="return-button-area">
             <form action="contact.php" method="post">
-                <input type="hidden" name="action" value="return_from_confirm">
+                <input type="hidden" name="id" value="<?php echo isset($id) ? htmlspecialchars($id) : ''; ?>">
                 <input type="hidden" name="name" value="<?php echo htmlspecialchars($name, ENT_QUOTES); ?>">
                 <input type="hidden" name="kana" value="<?php echo htmlspecialchars($kana, ENT_QUOTES); ?>">
                 <input type="hidden" name="tel" value="<?php echo htmlspecialchars($tell, ENT_QUOTES); ?>">
