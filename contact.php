@@ -15,16 +15,18 @@ if (!empty($_SESSION['form_data'])) {
 } elseif (isset($_POST['action']) && $_POST['action'] === 'return_from_confirm') {
     // 「戻る」ボタンからのPOSTデータがある場合
     $formData = [
-        'nameA' => $_POST['nameA'] ?? '',
+        'name' => $_POST['name'] ?? '',
         'kana' => $_POST['kana'] ?? '',
-        'tell' => $_POST['tell'] ?? '',
+        'tel' => $_POST['tel'] ?? '',
         'email' => $_POST['email'] ?? '',
-        'message' => $_POST['message'] ?? '',
+        'body' => $_POST['body'] ?? '',
     ];
 }
-
 // セッションのエラーメッセージとフォームデータをクリア
 unset($_SESSION['errors'], $_SESSION['form_data']);
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -57,20 +59,20 @@ unset($_SESSION['errors'], $_SESSION['form_data']);
             <div class="form1">
                 <dl>
                     <dt><label for="name">氏名<span>*</span></label></dt>
-                    <?php if (!empty($errors['nameA'])) : ?>
-                        <div class="error"><?php echo htmlspecialchars($errors['nameA'], ENT_QUOTES, 'UTF-8'); ?></div>
+                    <?php if (!empty($errors['name'])) : ?>
+                        <div class="error"><?php echo htmlspecialchars($errors['name'], ENT_QUOTES, 'UTF-8'); ?></div>
                     <?php endif; ?>
-                    <dd><input type="text" name="nameA" id="nameId" placeholder="山田太郎" value="<?php echo htmlspecialchars($formData['nameA'] ?? '', ENT_QUOTES); ?>"></dd>
+                    <dd><input type="text" name="name" id="nameId" placeholder="山田太郎" value="<?php echo htmlspecialchars($formData['name'] ?? '', ENT_QUOTES); ?>"></dd>
                     <dt><label for="kana">フリガナ<span>*</span></label></dt>
                     <?php if (!empty($errors['kana'])) : ?>
                         <div class="error"><?php echo htmlspecialchars($errors['kana'], ENT_QUOTES, 'UTF-8'); ?></div>
                     <?php endif; ?>
                     <dd><input type="text" name="kana" id="kanaId" placeholder="ヤマダタロウ" value="<?php echo htmlspecialchars($formData['kana'] ?? '', ENT_QUOTES); ?>"></dd>
                     <dt><label for="tell">電話番号</label></dt>
-                    <?php if (!empty($errors['tell'])) : ?>
-                        <div class="error"><?php echo htmlspecialchars($errors['tell'], ENT_QUOTES, 'UTF-8'); ?></div>
+                    <?php if (!empty($errors['tel'])) : ?>
+                        <div class="error"><?php echo htmlspecialchars($errors['tel'], ENT_QUOTES, 'UTF-8'); ?></div>
                     <?php endif; ?>
-                    <dd><input type="text" name="tell" id="tellId" placeholder="09012345678" value="<?php echo htmlspecialchars($formData['tell'] ?? '', ENT_QUOTES); ?>"></dd>
+                    <dd><input type="text" name="tel" id="tellId" placeholder="09012345678" value="<?php echo htmlspecialchars($formData['tel'] ?? '', ENT_QUOTES); ?>"></dd>
                     <dt><label for="email">メールアドレス<span>*</span></label></dt>
                     <?php if (!empty($errors['email'])) : ?>
                         <div class="error"><?php echo htmlspecialchars($errors['email'], ENT_QUOTES, 'UTF-8'); ?></div>
@@ -81,10 +83,10 @@ unset($_SESSION['errors'], $_SESSION['form_data']);
             <div class="form2">
                 <dl>
                     <dt class="label"><label for="message">お問い合わせ内容をご記入ください<span>*</span></label></dt>
-                    <?php if (!empty($errors['message'])) : ?>
-                        <div class="error"><?php echo htmlspecialchars($errors['message'], ENT_QUOTES, 'UTF-8'); ?></div>
+                    <?php if (!empty($errors['body'])) : ?>
+                        <div class="error"><?php echo htmlspecialchars($errors['body'], ENT_QUOTES, 'UTF-8'); ?></div>
                     <?php endif; ?>
-                    <dd><textarea name="message" id="messageId"><?php echo htmlspecialchars($formData['message'] ?? '', ENT_QUOTES); ?></textarea></dd>
+                    <dd><textarea name="body" id="messageId"><?php echo htmlspecialchars($formData['body'] ?? '', ENT_QUOTES); ?></textarea></dd>
                 </dl>
             </div>
             <div class="button-area">
@@ -93,8 +95,52 @@ unset($_SESSION['errors'], $_SESSION['form_data']);
         </form>
     </div>
 </section>
+<section>
+    <?php
+    require 'db.php';
+
+    try {
+        // PDOインスタンスの作成
+        $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo->exec("set names utf8");
+
+        // データの更新
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // フォームからのデータを取得して更新
+            $sql = "UPDATE contacts SET name = ?, kana = ?, tel = ?, email = ?, body = ? WHERE id = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$_POST['name'], $_POST['kana'], $_POST['tel'], $_POST['email'], $_POST['body'], $_POST['id']]);
+            echo "データを更新しました。<br>";
+        }
+
+        // データの表示
+        $stmt = $pdo->query("SELECT * FROM contacts");
+        echo "<table class='cafe_table'>";
+        echo "<tr>
+                <th>ID</th><th>名前</th><th>フリガナ</th><th>電話番号</th><th>メール</th><th>お問合せ内容</th><th></th><th></th>
+                </tr>";
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            echo "<tr>
+                        <td>" . htmlspecialchars($row['id']) . "</td>
+                        <td>" . htmlspecialchars($row['name']) . "</td>
+                        <td>" . htmlspecialchars($row['kana']) . "</td>
+                        <td>" . htmlspecialchars($row['tel']) . "</td>
+                        <td>" . htmlspecialchars($row['email']) . "</td>
+                        <td>" . nl2br(htmlspecialchars($row['body'])) . "</td>
+                        <td><a href='edit.php?id=" . htmlspecialchars($row['id']) . "'>編集</a></td>
+                        <td><a href='#' class='delete-link' data-id='" . htmlspecialchars($row['id']) . "'>削除</a></td>
+                        </tr>";
+        }
+
+        echo "</table>";
+    } catch (PDOException $e) {
+        echo "エラー: " . $e->getMessage();
+    }
+
+    ?>
+</section>
 <?php require 'footer.php'; ?>
-<script type="text/javascript" src="/js/contact.js"></script>
 
 </body>
 

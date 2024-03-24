@@ -1,0 +1,21 @@
+.cafe_table {
+    margin: auto;
+    border-collapse:collapse;
+    margin-bottom: 10px;
+}
+.cafe_table th{
+    padding-block: 3px;
+    padding-inline: 5px;
+    text-align: left;
+    width: 90px;
+    background-color: rgb(252, 237, 223);
+    border: solid 1px rgb(234, 221, 206);
+}
+.cafe_table td {
+    padding-block: 3px;
+    padding-inline: 5px;
+    border: solid 1px rgb(234, 221, 206);
+}
+.cafe_table td a {
+color: rgb(108, 160, 191);
+}

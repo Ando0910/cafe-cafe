@@ -1,6 +1,4 @@
 "use strict";
-
-
 // アニメーション
 window.addEventListener('scroll', function() {
     const covidElement = document.querySelector('.covid');
@@ -44,7 +42,6 @@ const pcToggleBtn = document.querySelector(".pc_toggle-button");
 const navPc = document.querySelector(".pc-sign-in");
 const bg = document.querySelector(".pc-sign-in__bg");
 
-
 function toggleMenuAndBackground() {
     bg.classList.toggle("pc_toggle-on");
     navPc.classList.toggle("pc_toggle-on");
@@ -55,7 +52,7 @@ function toggleMenuAndBackground() {
         navPc.style.visibility = 'hidden';
     } else {
         navPc.style.visibility = 'visible';
-        setTimeout(() => navPc.style.opacity = 1, 0); // レンダリングを許可してからフェードイン
+        setTimeout(() => navPc.style.opacity = 1, 0);
     }
 }
 
@@ -71,16 +68,17 @@ if (pcToggleBtn && navPc && bg) {
         navPc.style.visibility = 'hidden';
     });
 }
-//
+
 // バリデーション
 document.addEventListener("DOMContentLoaded", function() {
     document.querySelector("form").addEventListener("submit", function(event) {
-        var name = document.querySelector('input[name="nameA"]').value;
+        var name = document.getElementById('nameId').value;
         var kana = document.querySelector('input[name="kana"]').value;
-        var tell = document.querySelector('input[name="tell"]').value;
+        var tell = document.querySelector('input[name="tel"]').value;
         var email = document.querySelector('input[name="email"]').value;
-        var message = document.querySelector('textarea[name="message"]').value;
+        var message = document.querySelector('textarea[name="body"]').value;
         var errorMessage = "";
+
         // 名前の検証
         if (name.length === 0 || name.length > 10) {
             errorMessage += "氏名は必須入力です。10文字以内でご入力ください。\n";
@@ -108,3 +106,33 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+
+//  削除
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.delete-link').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            var id = this.getAttribute('data-id');
+            if (confirm('本当に削除しますか？')) {
+                fetch('delete.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'id=' + id
+                })
+                .then(response => response.text())
+                .then(data => {
+                    if (data.trim() === 'success') {
+                        this.closest('tr').remove();
+                    } else {
+                        alert('削除に失敗しました。');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
+    });
+});
+
+

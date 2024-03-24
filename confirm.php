@@ -4,7 +4,7 @@ session_start();
 // POSTリクエストからのアクセスでない、または必要なデータがPOSTされていない場合は、contact.phpにリダイレクトする
 if (
     $_SERVER['REQUEST_METHOD'] !== 'POST' ||
-    !isset($_POST['nameA'], $_POST['kana'], $_POST['tell'], $_POST['email'], $_POST['message'])
+    !isset($_POST['name'], $_POST['kana'], $_POST['tel'], $_POST['email'], $_POST['body'])
 ) {
     header('Location: contact.php');
     exit;
@@ -26,27 +26,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
     // POSTデータを変数に格納
-    $name = trim($_POST["nameA"] ?? '');
+    $name = trim($_POST["name"] ?? '');
     $kana = trim($_POST["kana"] ?? '');
-    $tell = trim($_POST["tell"] ?? '');
+    $tell = trim($_POST["tel"] ?? '');
     $email = trim($_POST["email"] ?? '');
-    $message = trim($_POST["message"] ?? '');
+    $message = trim($_POST["body"] ?? '');
 
     // バリデーションチェック
     if (empty($name) || mb_strlen($name) > 10) {
-        $errors['nameA'] = "氏名は必須入力です。10文字以内でご入力ください。";
+        $errors['name'] = "氏名は必須入力です。10文字以内でご入力ください。";
     }
     if (empty($kana) || mb_strlen($kana) > 10) {
         $errors['kana'] = "フリガナは必須入力です。10文字以内でご入力ください。";
     }
     if (!preg_match("/^[0-9]+$/", $tell)) {
-        $errors['tell'] = "電話番号は0-9の数字のみでご入力ください。";
+        $errors['tel'] = "電話番号は0-9の数字のみでご入力ください。";
     }
     if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = "メールアドレスは正しくご入力ください。";
     }
     if (empty($message)) {
-        $errors['message'] = "お問い合わせ内容は必須入力です。";
+        $errors['body'] = "お問い合わせ内容は必須入力です。";
     }
 
     // エラーがある場合、入力データとエラーメッセージをセッションに保存し、contact.phpにリダイレクト
@@ -58,8 +58,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 $_SESSION['form_submitted'] = true;
-
-
+$_SESSION['form_data'] = [
+    'name' => $_POST['name'],
+    'kana' => $_POST['kana'],
+    'tel' => $_POST['tel'],
+    'email' => $_POST['email'],
+    'body' => $_POST['body'],
+];
+// $_SESSION['form_data'] = [
+//     'name' => $_POST['name'],
+//     'kana' => $_POST['kana'],
+//     'tel' => $_POST['tel'],
+//     'email' => $_POST['email'],
+//     'body' => $_POST['body'],
+// ];
+require 'db.php';
 ?>
 <!DOCTYPE html>
 
@@ -98,22 +111,22 @@ $_SESSION['form_submitted'] = true;
             </div>
             <div class="form2">
                 <dl>
-                    <dt><label for="contact">お問い合わせ内容</label></dt>
+                    <dt><label for="message">お問い合わせ内容</label></dt>
                     <dd><?php echo nl2br($message); ?></dd>
                 </dl>
             </div>
             <div class="button-area">
-                <button class="submit-button" type="submit">
-                    <input type="hidden" name="action" value="return_from_confirm">送　信</button>
+                <input type="hidden" name="action" value="return_from_confirm">
+                <button class="submit-button" type="submit">送　信</button>
         </form>
         <div class="return-button-area">
             <form action="contact.php" method="post">
                 <input type="hidden" name="action" value="return_from_confirm">
-                <input type="hidden" name="nameA" value="<?php echo htmlspecialchars($name, ENT_QUOTES); ?>">
+                <input type="hidden" name="name" value="<?php echo htmlspecialchars($name, ENT_QUOTES); ?>">
                 <input type="hidden" name="kana" value="<?php echo htmlspecialchars($kana, ENT_QUOTES); ?>">
-                <input type="hidden" name="tell" value="<?php echo htmlspecialchars($tell, ENT_QUOTES); ?>">
+                <input type="hidden" name="tel" value="<?php echo htmlspecialchars($tell, ENT_QUOTES); ?>">
                 <input type="hidden" name="email" value="<?php echo htmlspecialchars($email, ENT_QUOTES); ?>">
-                <input type="hidden" name="message" value="<?php echo htmlspecialchars($message, ENT_QUOTES); ?>">
+                <input type="hidden" name="body" value="<?php echo htmlspecialchars($message, ENT_QUOTES); ?>">
                 <button type="submit-button" class="return-button">戻る</button>
             </form>
         </div>

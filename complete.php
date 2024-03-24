@@ -9,11 +9,45 @@ if (!isset($_SESSION['form_submitted'])) {
     // チェック後はフラグをクリア
     unset($_SESSION['form_submitted']);
 }
+//
+//
+// データベース
+require 'db.php';
+
+// フォームからのデータを受け取る
+$name = isset($_SESSION['form_data']['name']) ? $_SESSION['form_data']['name'] : null;
+$kana = isset($_SESSION['form_data']['kana']) ? $_SESSION['form_data']['kana'] : null;
+$tell = isset($_SESSION['form_data']['tel']) ? $_SESSION['form_data']['tel'] : null;
+$email = isset($_SESSION['form_data']['email']) ? $_SESSION['form_data']['email'] : null;
+$message = isset($_SESSION['form_data']['body']) ? $_SESSION['form_data']['body'] : null;
+// $name = isset($_POST['name']) ? ($_POST['name']) : null;
+// $kana = isset($_POST['kana']) ? ($_POST['kana']) : null;
+// $tell = isset($_POST['tel']) ? ($_POST['tel']) : null;
+// $email = isset($_POST['email']) ? ($_POST['email']) : null;
+// $message = isset($_POST['body']) ? ($_POST['body']) : null;
+
+// SQL文を準備
+$sql = "INSERT INTO contacts (name, kana, tel, email, body) VALUES (:name, :kana, :tel, :email, :body)";
+
+// 準備したSQL文を実行
+$stmt = $pdo->prepare($sql);
+
+// パラメータをバインド
+$stmt->bindParam(':name', $name, PDO::PARAM_STR);
+$stmt->bindParam(':kana', $kana, PDO::PARAM_STR);
+$stmt->bindParam(':tel', $tell, PDO::PARAM_STR);
+$stmt->bindParam(':email', $email, PDO::PARAM_STR);
+$stmt->bindParam(':body', $message, PDO::PARAM_STR);
+
+// SQL文を実行
+$stmt->execute();
+
+//
+//
 // フォームデータをセッションから削除
 if (isset($_SESSION['form_data'])) {
     unset($_SESSION['form_data']);
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="ja">
